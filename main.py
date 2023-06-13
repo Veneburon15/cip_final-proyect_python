@@ -4,7 +4,7 @@ The idea is that the teacher inputs the name of the students and the notes of th
 """
 
 # MAIN DICTIONARY
-estudiantes = []
+students = []
 
 # CONSTANTS
 OPCION_ALUMNOS = 1
@@ -14,30 +14,30 @@ OPCION_SALIR = 4
 
 ### MAIN FUNCTION
 def main():
-    permiso = input("Si desea ingresar las notas de un alumno, escriba 'Si'. De lo contrario, escriba cualquier letra para salir: ")
-    while permiso.lower() == "si":
+    permiso = input("If you want to enter a student's grades, write 'Yes'. Otherwise, write any letter to exit.")
+    while permiso.lower() == "yes":
         student_prom()
-        permiso = input("Si desea continuar promediando escriba 'Si', de lo contrario, escriba cualquier letra: ")
-    mostrar_menu()
-    print("Muchas gracias por usar nuestra plataforma")
+        permiso = input("If you want to continue averaging, write 'Yes'. Otherwise, write any letter.")
+    show_menu()
+    print("Thank you for using our averaging platform.")
 
 
 ####### FUNCTIONS
 ##### CORE FUNCTION
 def student_prom():
-    print("Gracias por usar nuestra plataforma de promediación")
+    print("Thank you for using our averaging platform.")
     data_solicitation()
 
 #### DATA SOLICITATION
 ##In this function the user will provide the info that the app will use
 def data_solicitation():
-    nombre_alumno = name_input()
+    name_alumno = name_input()
     nota_1 = pedir_nota(1)
     nota_2 = pedir_nota(2)
     nota_3 = pedir_nota(3)
-    promedio = calcular_promedio(nota_1, nota_2, nota_3)
-    student_add(nombre_alumno, nota_1, nota_2, nota_3, promedio)
-    print(f"El promedio del alumno {nombre_alumno} es: {promedio}")
+    average = calcular_average(nota_1, nota_2, nota_3)
+    student_add(name_alumno, nota_1, nota_2, nota_3, average)
+    print(f"The {name_alumno}'s average is: {average}")
 
 # NAME INPUT
 ##This function ask the user to input the name of the student
@@ -45,7 +45,7 @@ def name_input():
     alumno = ""
     regex = r'^[a-zA-Z\s]+$'
     while not alumno:
-        alumno = input("Ingrese el nombre del alumno: ")
+        alumno = input("Please enter the name of the student:")
     return alumno
 
 # GRADE SOLICITATION AND VALIDATION
@@ -54,34 +54,34 @@ def pedir_nota(nota_num):
     nota = None
     while True:
         try:
-            nota = float(input(f"Ingrese la nota del {nota_num}º examen: "))
+            nota = float(input(f"Please enter the grade for the {nota_num}º exam:"))
             if nota < 0 or nota > 20:
                 raise ValueError
             break
         except ValueError:
-            print("Error: La nota debe estar entre 0 y 20")
+            print("Error: The grade must be between 0 and 20.")
     return nota
 
 # AVERAGE CALCULATION
 ##This function does the calculation of the student's average
-def calcular_promedio(nota_1, nota_2, nota_3):
-    promedio = (nota_1 + nota_2 + nota_3) / 3
-    return "{:.2f}".format(promedio)
+def calcular_average(nota_1, nota_2, nota_3):
+    average = (nota_1 + nota_2 + nota_3) / 3
+    return "{:.2f}".format(average)
 
 # DATA ADDITTION
 ##This function sends the recopiled information to the mayn dictionary
-def student_add(nombre, nota_1, nota_2, nota_3, promedio):
-    estudiante = {"nombre": nombre, "nota1": nota_1, "nota2": nota_2, "nota3": nota_3, "promedio": promedio}
-    estudiantes.append(estudiante)
+def student_add(name, nota_1, nota_2, nota_3, average):
+    student = {"name": name, "nota1": nota_1, "nota2": nota_2, "nota3": nota_3, "average": average}
+    students.append(student)
 
 
 #### DATA DEVOLUTION
 ##This function deploys a "switch" for the user to select a way to show the dictionary's information
-def mostrar_menu():
+def show_menu():
     opcion = 0
     while opcion < OPCION_ALUMNOS or opcion > OPCION_SALIR:
         try:
-            opcion = int(input(f"Ingrese una opción:\n{OPCION_ALUMNOS}. Mostrar nombres de los alumnos ingresados\n{OPCION_ALUMNOS_PROMEDIOS}. Mostrar nombres de los alumnos y sus promedios\n{OPCION_ALUMNOS_INGRESADOS}. Datos de todos los alumnos ingresados\n{OPCION_SALIR}. Salir\n"))
+            opcion = int(input(f"Please enter an option:\n{OPCION_ALUMNOS}. Show the names of the entered students\n{OPCION_ALUMNOS_PROMEDIOS}. Show the names of the entered students and their averages\n{OPCION_ALUMNOS_INGRESADOS}. Show data of all the entered students\n{OPCION_SALIR}. Exit\n"))
         except ValueError:
             opcion = 0
     
@@ -92,36 +92,36 @@ def mostrar_menu():
     elif opcion == OPCION_ALUMNOS_INGRESADOS:
         show_data()
     elif opcion == OPCION_SALIR:
-        print("Saliendo del programa")
+        print("Exiting the program.")
     else:
-        print("Opción inválida")
+        print("Invalid option.")
 
 
 ##### DATA DEVOLUTION FUNCTIONS
 # NAME DEVOLUTION
 ##This function shows every student's name
 def names_dev():
-    mensaje = "\n".join([estudiante["nombre"] for estudiante in estudiantes])
-    print(mensaje)
+    message = "\n".join([student["name"] for student in students])
+    print(message)
 
 # NAMES AND AVERAGES DEVOLUTION
 ##This function shows every student's name and averages
 def names_prom():
-    mensaje = "\n".join([f"{estudiante['nombre']} ---- {estudiante['promedio']}" for estudiante in estudiantes])
-    print(mensaje)
+    message = "\n".join([f"{student['name']} ---- {student['average']}" for student in students])
+    print(message)
 
 # STUDENT LIST DEVOLUTION
 ##This function shows every student's lists that be inside the Main Dictionary
 def show_data():
-    mensaje = ""
-    for i, estudiante in enumerate(estudiantes):
-        mensaje += f"Estudiante #{i + 1}:\n" \
-                   f"Nombre: {estudiante['nombre']}\n" \
-                   f"Nota 1: {estudiante['nota1']}\n" \
-                   f"Nota 2: {estudiante['nota2']}\n" \
-                   f"Nota 3: {estudiante['nota3']}\n" \
-                   f"Promedio: {estudiante['promedio']}\n\n"
-    print(mensaje)
+    message = ""
+    for i, student in enumerate(students):
+        message += f"student #{i + 1}:\n" \
+                   f"name: {student['name']}\n" \
+                   f"Grade 1: {student['nota1']}\n" \
+                   f"Grade 2: {student['nota2']}\n" \
+                   f"Grade 3: {student['nota3']}\n" \
+                   f"average: {student['average']}\n\n"
+    print(message)
     
 if __name__ == "__main__":
     main()
